@@ -16,11 +16,14 @@ def main():
     assert 1 <= len(STORY) <= 60, "story must be 1-60 characters"
     assert len(STORY.split()) == 6, "story must be exactly six words"
     assert "\n" not in STORY, "story must be a single line"
+    assert STORY.isascii(), "story must be ASCII only"
+    assert all(word for word in STORY.split(" ")), "no empty words allowed"
     os.makedirs("/output", exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(STORY)
     with open(OUT, "r", encoding="utf-8") as f:
         assert f.read() == STORY, "written entry must match the story exactly"
+    assert os.path.getsize(OUT) == len(STORY.encode("ascii")), "entry must be exactly 39 bytes, no trailing newline"
     print("wrote", len(STORY), "characters to", OUT)
 
 
